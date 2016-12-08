@@ -167,7 +167,9 @@ gulp.task('assets:svg', function() {
 });
 
 gulp.task('assets:icons', function () {
-  var spriteData = gulp.src(config.source + '/assets/icons/*.png').pipe(spritesmith({
+  var spriteData = gulp.src(config.source + '/assets/icons/*.png')
+  .pipe(gulpif(!isDevelopment, imagemin()))
+  .pipe(spritesmith({
     imgName: 'sprite.png',
     cssName: 'sprite.css'
   }));

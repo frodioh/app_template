@@ -43,6 +43,7 @@ const svgmin = require('gulp-svgmin');
 const cheerio = require('gulp-cheerio');
 const replace = require('gulp-replace');
 const svgSprite = require('gulp-svg-sprite');
+const spritesmith = require('gulp.spritesmith');
 //Sourcemaps
 const sourcemaps = require('gulp-sourcemaps');
 //Нотификация
@@ -162,7 +163,15 @@ gulp.task('assets:svg', function() {
     })))
     .pipe(gulpif(!isDevelopment, replace('&gt;', '>')))
     .pipe(svgSprite(config.svgSprite))
-    .pipe(gulp.dest(config.build + '/assets'));
+    .pipe(gulp.dest(config.build + '/assets/sprites'));
+});
+
+gulp.task('assets:icons', function () {
+  var spriteData = gulp.src(config.source + '/assets/icons/*.png').pipe(spritesmith({
+    imgName: 'sprite.png',
+    cssName: 'sprite.css'
+  }));
+  return spriteData.pipe(gulp.dest(config.build + '/assets/sprites'));
 });
 
 gulp.task('watch', function() {
@@ -172,6 +181,7 @@ gulp.task('watch', function() {
   gulp.watch(config.source + '/assets/img/**/*.*', gulp.series('assets:images'));
   gulp.watch(config.source + '/assets/svg/**/*.*', gulp.series('assets:svg'));
   gulp.watch(config.source + '/assets/fonts/**/*.*', gulp.series('assets:fonts'));
+  gulp.watch(config.source + '/assets/icons/**/*.*', gulp.series('assets:icons'));
 });
 
 gulp.task('serve', function() {
@@ -187,6 +197,7 @@ gulp.task('build', gulp.series(
     'webpack',
     'scss',
     'assets:svg',
+    'assets:icons',
     'assets:images',
     'assets:fonts'
   ),
@@ -201,6 +212,7 @@ gulp.task('default', gulp.series(
   gulp.parallel(
     'scss',
     'assets:svg',
+    'assets:icons',
     'assets:images',
     'assets:fonts',
     'webpack'

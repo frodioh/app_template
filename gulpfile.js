@@ -170,8 +170,8 @@ gulp.task('assets:icons', function () {
   var spriteData = gulp.src(config.source + '/assets/icons/*.png')
   .pipe(gulpif(!isDevelopment, imagemin()))
   .pipe(spritesmith({
-    imgName: 'sprite.png',
-    cssName: 'sprite.css'
+    imgName: 'sprite-' + Math.random().toString().replace(/[^0-9]/g, '') + '.png';
+    cssName: 'sprite.scss'
   }));
   return spriteData.pipe(gulp.dest(config.build + '/assets/sprites'));
 });

@@ -137,7 +137,6 @@ gulp.task('assets:fonts', function() {
     .pipe(gulp.dest(config.build + '/assets/fonts'));
 });
 
-
 gulp.task('assets:images', function() {
   return gulp.src(config.source + '/assets/img/**/*.*', {since: gulp.lastRun('assets:images')})
     .pipe(gulpif(!isDevelopment, imagemin()))
@@ -167,13 +166,19 @@ gulp.task('assets:svg', function() {
 });
 
 gulp.task('assets:icons', function () {
+  var spriteSuffix = Math.random().toString().replace(/[^0-9]/g, '');
   var spriteData = gulp.src(config.source + '/assets/icons/*.png')
   .pipe(gulpif(!isDevelopment, imagemin()))
   .pipe(spritesmith({
-    imgName: 'sprite-' + Math.random().toString().replace(/[^0-9]/g, '') + '.png';
-    cssName: 'sprite.scss'
+    imgName: 'sprite-' + spriteSuffix + '.png',
+    cssName: '_sprite.scss',
+    imgPath: '../sprites/sprite-' + spriteSuffix + '.png',
+    cssVarMap: function(sprite) {
+      sprite.name = 's-' + sprite.name
+    }
   }));
-  return spriteData.pipe(gulp.dest(config.build + '/assets/sprites'));
+  spriteData.img.pipe(gulp.dest(config.build + '/assets/sprites/'));
+  return spriteData.css.pipe(gulp.dest(config.source + '/styles/modules/'));
 });
 
 gulp.task('watch', function() {
@@ -197,13 +202,13 @@ gulp.task('build', gulp.series(
   'clean',
   gulp.parallel(
     'webpack',
-    'scss',
     'assets:svg',
     'assets:icons',
     'assets:images',
     'assets:fonts'
   ),
   gulp.parallel(
+    'scss',
     'uglify',
     'pug'
   )
@@ -212,14 +217,16 @@ gulp.task('build', gulp.series(
 gulp.task('default', gulp.series(
   'clean',
   gulp.parallel(
-    'scss',
     'assets:svg',
     'assets:icons',
     'assets:images',
     'assets:fonts',
     'webpack'
   ),
-  'pug',
+  gulp.parallel(
+    'scss',
+    'pug'
+  ),
   gulp.parallel(
     'watch',
     'serve'

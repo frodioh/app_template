@@ -1,6 +1,12 @@
 html {
   box-sizing: border-box;
 }
+
 *, *:before, *:after {
   box-sizing: inherit;
+}
+
+html {
+  font: 14px 'Open Sans', Arial, sans-serif;
+  color: #000;
 }

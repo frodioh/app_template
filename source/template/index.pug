@@ -1,27 +1,6 @@
 doctype html
 html(lang="ru")
-  head
-    title Hello!!!
-    meta(charset="utf-8")
-    link(rel="stylesheet" href="assets/css/main.css")
+  include modules/head.pug
   body
     .wrapper
-      section.intro
-        header.main-header
-          a(href="#").logo
-            img(src="assets/img/logo.png" alt="Icndy").logo__image
-          nav.main-navigarion
-            ul.main-navigation__list
-              li.main-navigation__item
-                a.main-navigation__link(href="#") Mens
-              li.main-navigation__item
-                a.main-navigation__link(href="#") Women
-              li.main-navigation__item
-                a.main-navigation__link(href="#") Brands
-              li.main-navigation__item
-                a.main-navigation__link(href="#") Sale
-              li.main-navigation__item
-                a.main-navigation__link(href="#") Something very good
-      main.content
-    footer.main-footer
     script(src="assets/js/bundle.js")

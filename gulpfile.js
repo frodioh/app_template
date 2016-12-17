@@ -27,7 +27,7 @@ config.svgSprite = {
 };
 
 const gulp = require('gulp');
-//Webpack и всё для js
+//JS
 const webpack = require('webpack-stream');
 const uglify = require('gulp-uglify');
 //Перехват ошибок
@@ -37,7 +37,10 @@ const gulpif = require('gulp-if');
 //Препроцессоры
 const sass = require('gulp-sass');
 const pug = require('gulp-pug');
-//Оптимизация изображений
+//Линтеры
+const sassLint = require('gulp-sass-lint');
+//Оптимизация
+const cssmin = require('gulp-cssmin');
 const imagemin = require('gulp-imagemin');
 const svgmin = require('gulp-svgmin');
 const cheerio = require('gulp-cheerio');
@@ -113,7 +116,15 @@ gulp.task('scss', function() {
     .on('error', notify.onError({title: 'Style'}))
     .pipe(autoprefixer({ browsers: config.autoprefixerConfig }))
     .pipe(gulpif(isDevelopment, sourcemaps.write()))
+    .pipe(gulpif(!isDevelopment, cssmin()))
     .pipe(gulp.dest(config.build + '/assets/css'));
+});
+
+gulp.task('scss:lint', function() {
+  return gulp.src(config.source + '/styles/**/**.scss')
+    .pipe(sassLint())
+    .pipe(sassLint.format())
+    .pipe(sassLint.failOnError())
 });
 
 gulp.task('pug', function() {
@@ -183,7 +194,7 @@ gulp.task('assets:icons', function () {
 
 gulp.task('watch', function() {
   gulp.watch(config.source + '/template/**/*.*', gulp.series('pug'));
-  gulp.watch(config.source + '/styles/**/*.*', gulp.series('scss'));
+  gulp.watch(config.source + '/styles/**/*.*', gulp.series('scss:lint', 'scss'));
   gulp.watch(config.source + '/js/**/*.*', gulp.series('webpack'));
   gulp.watch(config.source + '/assets/img/**/*.*', gulp.series('assets:images'));
   gulp.watch(config.source + '/assets/svg/**/*.*', gulp.series('assets:svg'));
@@ -221,6 +232,7 @@ gulp.task('default', gulp.series(
     'assets:icons',
     'assets:images',
     'assets:fonts',
+    'scss:lint',
     'webpack'
   ),
   gulp.parallel(

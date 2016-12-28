@@ -1,7 +1,4 @@
-@function rem($px) {
-  @return $px / 16px + 0rem;
-}
-
+//Extends
 .clearfix {
   &::before,
   &::after {
@@ -15,4 +12,34 @@
 
 .container {
   margin: auto;
+}
+
+//Functions
+@function rem($px) {
+  @return $px / 16px + 0rem;
+}
+
+//Mixins
+@mixin extrasmall() {
+  @media only screen and (min-width: 480px) {
+    @content;
+  }
+}
+
+@mixin small() {
+  @media screen and (min-width: 768px) {
+    @content;
+  }
+}
+
+@mixin medium() {
+  @media screen and (min-width: 992px) {
+    @content;
+  }
+}
+
+@mixin large() {
+  @media screen and (min-width: 1200px) {
+    @content;
+  }
 }

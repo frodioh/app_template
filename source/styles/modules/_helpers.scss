@@ -1,0 +1,18 @@
+@function rem($px) {
+  @return $px / 16px + 0rem;
+}
+
+.clearfix {
+  &::before,
+  &::after {
+    content: '';
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+.container {
+  margin: auto;
+}

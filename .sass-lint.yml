@@ -15,6 +15,7 @@ files:
   ignore:
     - '**/_normalize.*'
     - '**/_typo.*'
+    - '**/_sprite.*'
 options:
   formatter: stylish
   merge-default-rules: false

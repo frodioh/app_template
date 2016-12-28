@@ -7,16 +7,6 @@ html {
 }
 
 html {
-  font: 100% $fs-primary;
+  font: 100% Arial;
   color: #000;
-}
-
-.clearfix::before,
-.clearfix::after {
-  content: '';
-  display: table;
-}
-
-.clearfix::after {
-  clear: both;
 }

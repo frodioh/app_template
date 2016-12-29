@@ -112,7 +112,9 @@ gulp.task('uglify', function() {
 gulp.task('scss', function() {
   return gulp.src(config.source + '/styles/main.scss')
     .pipe(gulpif(isDevelopment, sourcemaps.init()))
-    .pipe(sass())
+    .pipe(sass({
+        includePaths: ['node_modules/susy/sass']
+      }))
     .on('error', notify.onError({title: 'Style'}))
     .pipe(autoprefixer({ browsers: config.autoprefixerConfig }))
     .pipe(gulpif(isDevelopment, sourcemaps.write()))

@@ -1,7 +1,7 @@
 'use strict';
 
 //Переменная окружения, которой будут присваиватся значения (development или production)
-const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development';
+const isDevelopment = !(process.env.NODE_ENV == 'production') || process.env.NODE_ENV == 'development';
 
 //Основной конфиг
 const config = {
@@ -113,12 +113,12 @@ gulp.task('scss', function() {
   return gulp.src(config.source + '/styles/main.scss')
     .pipe(gulpif(isDevelopment, sourcemaps.init()))
     .pipe(sass({
-        includePaths: ['node_modules/susy/sass']
-      }))
+      includePaths: ['node_modules/susy/sass']
+    }))
     .on('error', notify.onError({title: 'Style'}))
     .pipe(autoprefixer({ browsers: config.autoprefixerConfig }))
-    .pipe(gulpif(isDevelopment, sourcemaps.write()))
     .pipe(gulpif(!isDevelopment, cssmin()))
+    .pipe(gulpif(isDevelopment, sourcemaps.write()))
     .pipe(gulp.dest(config.build + '/assets/css'));
 });
 

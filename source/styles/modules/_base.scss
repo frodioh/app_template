@@ -1,12 +1,24 @@
+$susy: (
+  columns: 12,
+  gutters: 1/4,
+  math: fluid,
+  output: float,
+  gutter-position: after,
+  global-box-sizing: border-box,
+  debug: (
+    image: hide,
+    color: rgba(#39f, .6),
+    output: background,
+    toggle: top right,
+  )
+);
+
 html {
   box-sizing: border-box;
+  font: 100% Arial;
+  color: #000;
 }
 
 *, *:before, *:after {
   box-sizing: inherit;
-}
-
-html {
-  font: 100% Arial;
-  color: #000;
 }
